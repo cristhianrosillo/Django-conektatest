@@ -1,3 +1,1 @@
-git add .
-git commit -m "Procfile"
-git push heroku master
+web: gunicorn conekta_django.wsgi --log-file -
