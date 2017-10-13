@@ -89,13 +89,13 @@
       <form action="" name="form1" method="POST" id="card-form" class="form-style-6">
         {% csrf_token %}
         <span class="card-errors" style="color: red"></span>
-              <input type="text" size="20" data-conekta="card[name]" style="width:100%" placeholder="Nombre de tarjetabiente" value="Cristhian Rosillo"/>
-              <input type="text" oninput="cardnumber(document.form1.tarjeta)" name="tarjeta" size="20" data-conekta="card[number]"style="width:100%" placeholder="Número de Tarjeta" value="4193355024523505"/>
-              <input type="password" size="4" data-conekta="card[cvc]" style="width:32% " placeholder="CVV" value="662"/>
+              <input type="text" size="20" data-conekta="card[name]" style="width:100%" placeholder="Nombre de tarjetabiente"/>
+              <input type="text" oninput="cardnumber(document.form1.tarjeta)" name="tarjeta" size="20" data-conekta="card[number]"style="width:100%" placeholder="Número de Tarjeta"/>
+              <input type="password" size="4" data-conekta="card[cvc]" style="width:32% " placeholder="CVV"/>
               <br>
-              <input type="text" size="2" data-conekta="card[exp_month]" placeholder="MM" style="width:30%" value="04">
+              <input type="text" size="2" data-conekta="card[exp_month]" placeholder="MM" style="width:30%"">
               <span style="text:30px"> / </span>
-              <input type="text" size="4" data-conekta="card[exp_year]" placeholder="AAAA" style="width:30%" value="2019">
+              <input type="text" size="4" data-conekta="card[exp_year]" placeholder="AAAA" style="width:30%"">
               <button type="submit">Validar Tarjeta y Pagar</button>
               <span class="results-output" style="color: red padding:center"></span>
       </form>
