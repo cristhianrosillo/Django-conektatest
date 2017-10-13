@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Conketa Test WEB</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.conekta.io/js/latest/conekta.js"></script>
+
+    <style media="screen">
+      .form-style-6{
+          font: 95% Arial, Helvetica, sans-serif;
+          max-width: 400px;
+          margin: 10px auto;
+          padding: 16px;
+          background: #F7F7F7;
+      }
+      .form-style-6 h1{
+          background: #43D1AF;
+          padding: 20px 0;
+          font-size: 140%;
+          font-weight: 300;
+          text-align: center;
+          color: #fff;
+          margin: -16px -16px 16px -16px;
+      }
+      .form-style-6 input[type="text"],
+      .form-style-6 input[type="date"],
+      .form-style-6 input[type="datetime"],
+      .form-style-6 input[type="email"],
+      .form-style-6 input[type="number"],
+      .form-style-6 input[type="password"],
+      .form-style-6 input[type="time"],
+      .form-style-6 input[type="url"],
+      .form-style-6 textarea,
+      .form-style-6 select
+      {
+          -webkit-transition: all 0.30s ease-in-out;
+          -moz-transition: all 0.30s ease-in-out;
+          -ms-transition: all 0.30s ease-in-out;
+          -o-transition: all 0.30s ease-in-out;
+          outline: none;
+          box-sizing: border-box;
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          background: #fff;
+          margin-bottom: 4%;
+          border: 1px solid #ccc;
+          padding: 3%;
+          color: #555;
+          font: 95% Arial, Helvetica, sans-serif;
+      }
+      .form-style-6 input[type="text"]:focus,
+      .form-style-6 input[type="date"]:focus,
+      .form-style-6 input[type="datetime"]:focus,
+      .form-style-6 input[type="email"]:focus,
+      .form-style-6 input[type="number"]:focus,
+      .form-style-6 input[type="search"]:focus,
+      .form-style-6 input[type="time"]:focus,
+      .form-style-6 input[type="url"]:focus,
+      .form-style-6 textarea:focus,
+      .form-style-6 select:focus
+      {
+          box-shadow: 0 0 5px #43D1AF;
+          padding: 3%;
+          border: 1px solid #43D1AF;
+      }
+
+      .form-style-6 button[type="submit"]{
+          box-sizing: border-box;
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          width: 100%;
+          padding: 3%;
+          background: #43D1AF;
+          border-bottom: 2px solid #30C29E;
+          border-top-style: none;
+          border-right-style: none;
+          border-left-style: none;
+          color: #fff;
+      }
+      .form-style-6 button[type="submit"]:hover{
+          background: #2EBC99;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-style-6">
+      <h1 class="text-center encabezado">Cobro con Tarjetas VISA Únicamente</h1>
+      <form action="" name="form1" method="POST" id="card-form" class="form-style-6">
+        {% csrf_token %}
+        <span class="card-errors" style="color: red"></span>
+              <input type="text" size="20" data-conekta="card[name]" style="width:100%" placeholder="Nombre de tarjetabiente" value="Cristhian Rosillo"/>
+              <input type="text" oninput="cardnumber(document.form1.tarjeta)" name="tarjeta" size="20" data-conekta="card[number]"style="width:100%" placeholder="Número de Tarjeta" value="4193355024523505"/>
+              <input type="password" size="4" data-conekta="card[cvc]" style="width:32% " placeholder="CVV" value="662"/>
+              <br>
+              <input type="text" size="2" data-conekta="card[exp_month]" placeholder="MM" style="width:30%" value="04">
+              <span style="text:30px"> / </span>
+              <input type="text" size="4" data-conekta="card[exp_year]" placeholder="AAAA" style="width:30%" value="2019">
+              <button type="submit">Validar Tarjeta y Pagar</button>
+              <span class="results-output" style="color: red padding:center"></span>
+      </form>
+      <p>* Se generará un cobro dummy por 200 pesos con token de datos ingresados </p>
+
+    </div>
+
+    <script type="text/javascript">
+          Conekta.setPublishableKey('key_HDrk276GyFsRxyoSZzryrRw'); //llave publica
+
+          var conektaSuccessResponseHandler = function(token) {
+            var $form = $("#card-form");
+            //Inserta el token_id en la forma para que se envíe al servidor
+            $form.append('<input type="hidden" name="conektaTokenId" id="conektaTokenId" />');
+            $("#conektaTokenId").val(token.id)
+            $form.get(0).submit(); //Hace submit
+          };
+
+        var conektaErrorResponseHandler = function(response) {
+          var $form = $("#card-form");
+          $form.find(".card-errors").text(response.message_to_purchaser);
+          $form.find("button").prop("disabled", false);
+        };
+
+        function cardnumber(crdnum)
+        {
+          var cardno = /^(?:4[0-9]{12}(?:[0-9]{3})?)$/;
+          var $form = $("#card-form");
+          if(crdnum.value.match(cardno))
+                {
+                  $form.find(".results-output").text("");
+                  $form.find("button").prop("disabled", false);
+              return true;
+                }
+              else
+                {
+                  //alert ("No es VISA")
+                  $form.find(".results-output").text("La tarjeta no es VISA");
+                  $form.find("button").prop("disabled", true);
+                return false;
+                }
+        }
+
+        //jQuery para que genere el token después de dar click en submit
+        $(function () {
+          $("#card-form").submit(function(event) {
+
+            alert("Botón presionado","Tokenización correct");
+
+            var $form = $(this);
+            // Previene hacer submit más de una vez
+            $form.find("button").prop("disabled", true);
+
+            Conekta.token.create($form, conektaSuccessResponseHandler, conektaErrorResponseHandler);
+
+            return false
+          });
+        });
+
+   </script>
+
+  </body>
+</html>

@@ -1,0 +1,58 @@
+from __future__ import unicode_literals
+
+from django.db import models
+from django.conf import settings
+import conekta
+import json
+
+class Sale(models.Model):
+    def __init__(self, *args, **kwargs):
+        super(Sale, self).__init__(*args, **kwargs)
+
+        conekta.api_key = settings.CONEKTA_PRIVATE_KEY
+
+    def charge(self, price_in_cents, token_id): #self, price_in_cents, token_id
+        try:
+            charge = conekta.Order.create({
+                  "charges":[{
+                  "payment_method": {
+                    "type":"default"
+                  }
+                }],
+
+                "currency": "MXN",
+              "customer_info": {
+               "customer_id": "cus_2hLRiYxabtaRMTCug"
+              },
+
+              "details": {
+                "name": "Sancho Panza",
+                "phone": "12345678",
+                "email": "sancho@panzon.es",
+
+                "line_items": [{
+                  "name": "Burro",
+                  "amount": 50000,
+                  "quantity": 2,
+                }],
+
+                "shipment": {
+                    "carrier":"McFly",
+                    "service":"Time Travel",
+                    "price": 10000,
+
+                    "address": {
+                      "street1": "Algun lugar de la Mancha",
+                      "street2": "Cuyo Nombre no quiero acordarme",
+                      "city":"La Mancha",
+                      "state":"Toledo",
+                      "zip":"ZWR t13",
+                      "country":"Spain"
+                    }
+                  }
+              }
+            })
+            return json.dumps(charge.__dict__)
+
+        except conekta.ConektaError as e:
+            return e.error_json['message']
