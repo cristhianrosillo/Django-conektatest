@@ -1,2 +1,1 @@
-config: set DISABLE_COLLECTSTATIC=1
-web: gunicorn conekta_django.wsgi --log-file -
+web: gunicorn conekta_django.wsgi.application --log-file -
