@@ -2,6 +2,7 @@ web: gunicorn conekta_django.wsgi
 web: gunicorn conekta_django:app
 web: python manage.py runserver
 web: python django manage.py runserver
+python manage.py runserver 0.0.0.0:8000 --noreload
 
 [packages]
 dj-database-url = "0.4.2"
