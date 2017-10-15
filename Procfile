@@ -1,1 +1,2 @@
-web: gunicorn conekta_django.wsgi.application --log-file -
+web: gunicorn conekta_django.wsgi 
+web: gunicorn conekta_django:app
