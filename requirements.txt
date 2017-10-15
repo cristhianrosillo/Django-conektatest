@@ -2,3 +2,4 @@ dj-database-url==0.4.2
 gunicorn==19.7.1
 django==1.11.6
 conekta==2.4.0
+psycopg2==2.4.5
