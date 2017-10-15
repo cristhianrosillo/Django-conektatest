@@ -99,7 +99,7 @@
               <button type="submit">Validar Tarjeta y Pagar</button>
               <span class="results-output" style="color: red padding:center"></span>
       </form>
-      <p>* Se generará un cobro dummy por 200 pesos con token de datos ingresados </p>
+      <p>* Se generará un cobro dummy por $3000 pesos (2000 de 1 articulo y 1000 de envío) con token de datos ingresados </p>
 
     </div>
 
@@ -119,7 +119,7 @@
           $form.find(".card-errors").text(response.message_to_purchaser);
           $form.find("button").prop("disabled", false);
         };
-
+        //Fucnión para validar tarjeta sea VISA
         function cardnumber(crdnum)
         {
           var cardno = /^(?:4[0-9]{12}(?:[0-9]{3})?)$/;
@@ -143,7 +143,7 @@
         $(function () {
           $("#card-form").submit(function(event) {
 
-            alert("Botón presionado","Tokenización correct");
+            //alert("Botón presionado","Tokenización correct");
 
             var $form = $(this);
             // Previene hacer submit más de una vez
