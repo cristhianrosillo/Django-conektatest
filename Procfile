@@ -1,5 +1,3 @@
-web: gunicorn conekta_django.wsgi
-web: gunicorn conekta_django:app
 web: python manage.py runserver 0.0.0.0:8080
 
 [packages]
