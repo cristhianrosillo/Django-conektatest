@@ -1,4 +1,6 @@
-web: python manage.py runserver 0.0.0.0:8080
+web: gunicorn conekta_django.wsgi
+web: gunicorn conekta_django:app
+web: python manage.py runserver 0.0.0.0:$PORT
 
 [packages]
 dj-database-url = "0.4.2"
